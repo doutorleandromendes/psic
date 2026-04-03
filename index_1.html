@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currículo de Psicanálise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #f5f0e8;
+    --bg-warm:   #ede7d9;
+    --bg-card:   #fdfbf7;
+    --bg-reg:    #fdfbf7;
+    --ink:       #1e1a12;
+    --ink-soft:  #4a4438;
+    --ink-faint: #8a8070;
+    --gold:      #8a6d3b;
+    --gold-bg:   #f9f3e8;
+    --blue:      #3a5a78;
+    --blue-bg:   #eef3f8;
+    --border:    #d8cfbe;
+    --border-strong: #b8aa94;
+    --phase-done: #5a7a4a;
+    --phase-act:  #3a5a78;
+    --phase-next: #8a8070;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── Layout ── */
+  #shell {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  #sidebar {
+    background: var(--bg-warm);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  #sidebar h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-phase {
+    padding: 0.4rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: background 0.15s;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-phase:hover { background: var(--border); }
+  .nav-phase.active { background: var(--blue-bg); color: var(--blue); font-weight: 500; }
+
+  .nav-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.6;
+    min-width: 1.2rem;
+  }
+
+  .nav-badge {
+    margin-left: auto;
+    font-size: 0.65rem;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .nav-badge.done  { background: #e8f2e3; color: var(--phase-done); }
+  .nav-badge.act   { background: var(--blue-bg); color: var(--blue); }
+  .nav-badge.next  { background: var(--bg); color: var(--ink-faint); border: 1px solid var(--border); }
+
+  /* ── Main ── */
+  #main {
+    padding: 3rem 4rem 6rem;
+    max-width: 860px;
+  }
+
+  .page-header {
+    margin-bottom: 3.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-strong);
+  }
+  .page-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .page-header .sub {
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+    margin-top: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .phase-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2em 0.7em;
+    border-radius: 3px;
+    margin-bottom: 0.8rem;
+  }
+  .phase-badge.done { background: #e8f2e3; color: var(--phase-done); }
+  .phase-badge.active { background: var(--blue-bg); color: var(--blue); }
+
+  /* ── Loading ── */
+  #loading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--ink-faint);
+    font-size: 0.95rem;
+    padding: 3rem 0;
+  }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Text items ── */
+  .text-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+
+  .ti {
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 0;
+  }
+  .ti:first-child { padding-top: 0; }
+
+  .th {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .yr {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--ink-faint);
+    min-width: 2.8rem;
+    flex-shrink: 0;
+  }
+
+  .ttl {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .orig {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-faint);
+    letter-spacing: 0.01em;
+    margin-top: 0.1rem;
+  }
+
+  /* ── Buttons ── */
+  .tactions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .abtn {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 0.82rem;
+    padding: 0.3em 0.85em;
+    border-radius: 4px;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.35em;
+    letter-spacing: 0.01em;
+  }
+
+  .sbtn {
+    background: var(--gold-bg);
+    border-color: #c8a870;
+    color: var(--gold);
+  }
+  .sbtn:hover, .sbtn.open { background: #f0e4c8; border-color: var(--gold); }
+  .sbtn.open { font-weight: 500; }
+
+  .rbtn {
+    background: var(--blue-bg);
+    border-color: #7a9ab8;
+    color: var(--blue);
+  }
+  .rbtn:hover, .rbtn.open { background: #dce8f2; border-color: var(--blue); }
+  .rbtn.open { font-weight: 500; }
+
+  .ba { font-size: 0.65em; transition: transform 0.2s; display: inline-block; }
+  .abtn.open .ba { transform: rotate(180deg); }
+
+  /* ── Sintese ── */
+  .tsintese {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+    background: var(--gold-bg);
+    border-left: 3px solid #c8a870;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+  .tsintese.open { display: block; }
+
+  /* ── Registro ── */
+  .tata {
+    display: none;
+    margin-top: 1rem;
+    padding: 1.5rem 1.8rem;
+    background: var(--bg-reg);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 4px 4px 0;
+    font-size: 0.97rem;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .tata.open { display: block; }
+
+  /* Registro inner styles */
+  .tata .ab { margin-bottom: 2rem; }
+  .tata .ab:last-child { margin-bottom: 0; }
+
+  .tata .abt {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--blue-bg);
+  }
+
+  .tata p { margin-bottom: 0.9rem; }
+  .tata p:last-child { margin-bottom: 0; }
+
+  .tata blockquote {
+    margin: 1.2rem 0;
+    padding: 0.9rem 1.2rem;
+    background: var(--bg-warm);
+    border-left: 2px solid var(--border-strong);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .tata blockquote cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    font-style: normal;
+    color: var(--ink-faint);
+    letter-spacing: 0.01em;
+  }
+
+  .tata .pausa {
+    margin: 1.3rem 0;
+    padding: 1rem 1.2rem;
+    background: #f0f5fa;
+    border: 1px solid #c8d8e8;
+    border-radius: 4px;
+    font-size: 0.92rem;
+    color: #2a4a62;
+  }
+
+  .tata .pausa-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.4rem;
+  }
+
+  .tata em { font-style: italic; }
+  .tata strong { font-weight: 600; }
+
+  .tata dl { margin: 0.8rem 0 0.8rem 1rem; }
+  .tata dt { font-weight: 600; margin-top: 0.5rem; }
+  .tata dd { margin-left: 1.2rem; color: var(--ink-soft); }
+
+  .tata ul, .tata ol { margin: 0.5rem 0 0.5rem 1.5rem; }
+  .tata li { margin-bottom: 0.3rem; }
+
+  /* ── Error ── */
+  .err {
+    padding: 2rem;
+    color: #8a4a3a;
+    background: #fdf2ee;
+    border: 1px solid #e8c8bc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-warm); }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    #shell { grid-template-columns: 1fr; }
+    #sidebar { position: static; height: auto; }
+    #main { padding: 2rem 1.5rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="shell">
+
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <h1>Currículo de Psicanálise</h1>
+    <div class="nav-phase active" onclick="loadPhase(1, this)">
+      <span class="nav-num">I</span>
+      Fundamentos Freudianos
+      <span class="nav-badge done">Concluída</span>
+    </div>
+    <div class="nav-phase" onclick="loadPhase(2, this)">
+      <span class="nav-num">II</span>
+      Ego Psychology &amp; Self Psychology
+      <span class="nav-badge next">Em breve</span>
+    </div>
+    <div class="nav-phase" onclick="loadPhase(3, this)">
+      <span class="nav-num">III</span>
+      Relações de Objeto Britânicas
+      <span class="nav-badge next">Em breve</span>
+    </div>
+    <div class="nav-phase" onclick="loadPhase(4, this)">
+      <span class="nav-num">IV</span>
+      Escola Interpessoal/Relacional
+      <span class="nav-badge next">Em breve</span>
+    </div>
+    <div class="nav-phase" onclick="loadPhase(5, this)">
+      <span class="nav-num">V</span>
+      Lacan
+      <span class="nav-badge next">Em breve</span>
+    </div>
+    <div class="nav-phase" onclick="loadPhase(6, this)">
+      <span class="nav-num">VI</span>
+      Síntese Crítica
+      <span class="nav-badge next">Em breve</span>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main id="main">
+    <div id="content">
+      <div id="loading"><div class="spinner"></div> Carregando…</div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────
+const PHASES = {
+  1: { file: 'fase1.json', status: 'done' },
+  2: { file: 'fase2.json', status: 'next' },
+  3: { file: 'fase3.json', status: 'next' },
+  4: { file: 'fase4.json', status: 'next' },
+  5: { file: 'fase5.json', status: 'next' },
+  6: { file: 'fase6.json', status: 'next' },
+};
+
+let currentPhase = null;
+let activeNavEl  = null;
+
+// ── Load phase ─────────────────────────────────────────
+async function loadPhase(n, navEl) {
+  if (currentPhase === n) return;
+  currentPhase = n;
+
+  // Update nav highlight
+  if (activeNavEl) activeNavEl.classList.remove('active');
+  activeNavEl = navEl;
+  navEl.classList.add('active');
+
+  const content = document.getElementById('content');
+  content.innerHTML = '<div id="loading"><div class="spinner"></div> Carregando…</div>';
+
+  const ph = PHASES[n];
+
+  // Not-yet-built phases
+  if (ph.status === 'next') {
+    content.innerHTML = `
+      <div class="page-header">
+        <div class="phase-badge active">Fase ${n}</div>
+        <h2>Em construção</h2>
+        <p class="sub">O conteúdo desta fase será adicionado à medida que o curso avança.</p>
+      </div>`;
+    return;
+  }
+
+  try {
+    const res = await fetch(ph.file);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    renderPhase(data, n);
+  } catch (e) {
+    content.innerHTML = `<div class="err"><strong>Erro ao carregar ${ph.file}.</strong><br>${e.message}<br><br>Verifique que o arquivo está na mesma pasta que index.html.</div>`;
+  }
+}
+
+// ── Render phase ───────────────────────────────────────
+function renderPhase(data, n) {
+  const statusLabel = { done: 'Concluída', active: 'Em andamento', next: 'Em breve' };
+  const badgeClass  = { done: 'done', active: 'active', next: 'next' };
+  const ph = PHASES[n];
+
+  let html = `
+    <div class="page-header">
+      <div class="phase-badge ${badgeClass[ph.status]}">Fase ${n} — ${statusLabel[ph.status]}</div>
+      <h2>${data.titulo}</h2>
+      <p class="sub">${data.textos.length} texto${data.textos.length !== 1 ? 's' : ''}</p>
+    </div>
+    <ul class="text-list">`;
+
+  data.textos.forEach((t, i) => {
+    const sid = `s-${n}-${i}`;
+    const rid = `r-${n}-${i}`;
+    const hasSint = t.sintese && t.sintese.trim();
+    const hasReg  = t.registro_html && t.registro_html.trim();
+
+    html += `<li class="ti">
+      <div class="th">
+        <span class="yr">${t.ano}</span>
+        <span class="ttl">${t.titulo_pt}<span class="orig">${t.titulo_de}</span></span>
+      </div>
+      <div class="tactions">
+        ${hasSint ? `<button class="abtn sbtn" onclick="togglePanel('${sid}', this)">Síntese <span class="ba">▾</span></button>` : ''}
+        ${hasReg  ? `<button class="abtn rbtn" onclick="togglePanel('${rid}', this)">Registro do curso <span class="ba">▾</span></button>` : ''}
+      </div>
+      ${hasSint ? `<div class="tsintese" id="${sid}">${t.sintese}</div>` : ''}
+      ${hasReg  ? `<div class="tata" id="${rid}">${t.registro_html}</div>` : ''}
+    </li>`;
+  });
+
+  html += '</ul>';
+  document.getElementById('content').innerHTML = html;
+}
+
+// ── Toggle panel ───────────────────────────────────────
+function togglePanel(id, btn) {
+  const el = document.getElementById(id);
+  const open = el.classList.toggle('open');
+  btn.classList.toggle('open', open);
+}
+
+// ── Init ───────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const firstNav = document.querySelector('.nav-phase');
+  activeNavEl = firstNav;
+  loadPhase(1, firstNav);
+});
+</script>
+</body>
+</html>
