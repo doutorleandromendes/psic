@@ -368,35 +368,35 @@
   <!-- Sidebar -->
   <nav id="sidebar">
     <h1>Currículo de Psicanálise</h1>
-    <div class="nav-phase active" onclick="loadPhase(1, this)">
+    <div class="nav-phase active" data-phase="1" onclick="loadPhase(1, this)">
       <span class="nav-num">I</span>
       Fundamentos Freudianos
-      <span class="nav-badge done">Concluída</span>
+      <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" onclick="loadPhase(2, this)">
+    <div class="nav-phase" data-phase="2" onclick="loadPhase(2, this)">
       <span class="nav-num">II</span>
       Ego Psychology &amp; Self Psychology
-      <span class="nav-badge next">Em breve</span>
+      <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" onclick="loadPhase(3, this)">
+    <div class="nav-phase" data-phase="3" onclick="loadPhase(3, this)">
       <span class="nav-num">III</span>
       Relações de Objeto Britânicas
-      <span class="nav-badge next">Em breve</span>
+      <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" onclick="loadPhase(4, this)">
+    <div class="nav-phase" data-phase="4" onclick="loadPhase(4, this)">
       <span class="nav-num">IV</span>
       Escola Interpessoal/Relacional
-      <span class="nav-badge next">Em breve</span>
+      <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" onclick="loadPhase(5, this)">
+    <div class="nav-phase" data-phase="5" onclick="loadPhase(5, this)">
       <span class="nav-num">V</span>
       Lacan
-      <span class="nav-badge next">Em breve</span>
+      <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" onclick="loadPhase(6, this)">
+    <div class="nav-phase" data-phase="6" onclick="loadPhase(6, this)">
       <span class="nav-num">VI</span>
       Síntese Crítica
-      <span class="nav-badge next">Em breve</span>
+      <span class="nav-badge">…</span>
     </div>
   </nav>
 
@@ -412,7 +412,7 @@
 <script>
 // ── State ──────────────────────────────────────────────
 const PHASES = {
-  1: { file: 'fase1.json', status: 'done' },
+  1: { file: 'fase1.json', status: 'next' },
   2: { file: 'fase2.json', status: 'next' },
   3: { file: 'fase3.json', status: 'next' },
   4: { file: 'fase4.json', status: 'next' },
@@ -422,6 +422,35 @@ const PHASES = {
 
 let currentPhase = null;
 let activeNavEl  = null;
+
+// ── Auto-detect available phases ───────────────────────
+async function detectPhases() {
+  await Promise.all(
+    Object.entries(PHASES).map(async ([n, ph]) => {
+      try {
+        const res = await fetch(ph.file, { method: 'HEAD' });
+        if (res.ok) ph.status = 'done';
+      } catch (_) {}
+    })
+  );
+  updateNavBadges();
+}
+
+function updateNavBadges() {
+  document.querySelectorAll('.nav-phase').forEach(el => {
+    const n = parseInt(el.dataset.phase);
+    const ph = PHASES[n];
+    if (!ph) return;
+    const badge = el.querySelector('.nav-badge');
+    if (ph.status === 'done') {
+      badge.className = 'nav-badge done';
+      badge.textContent = 'Concluída';
+    } else {
+      badge.className = 'nav-badge next';
+      badge.textContent = 'Em breve';
+    }
+  });
+}
 
 // ── Load phase ─────────────────────────────────────────
 async function loadPhase(n, navEl) {
@@ -505,7 +534,8 @@ function togglePanel(id, btn) {
 }
 
 // ── Init ───────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await detectPhases();
   const firstNav = document.querySelector('.nav-phase');
   activeNavEl = firstNav;
   loadPhase(1, firstNav);
