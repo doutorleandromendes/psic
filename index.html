@@ -527,7 +527,7 @@ function renderPhase(data, key) {
     const sid = `s-${key}-${i}`, rid = `r-${key}-${i}`;
     const hasSint = !!(t.sintese && t.sintese.trim());
     const hasReg  = !!(t.registro_html && t.registro_html.trim());
-    html += `<li class="ti" id="ti-${n}-${i}">
+    html += `<li class="ti" id="ti-${key}-${i}">
       <div class="th">
         <span class="yr">${t.ano}</span>
         <span class="ttl">${t.titulo_pt}<span class="orig">${t.titulo_de}</span></span>
