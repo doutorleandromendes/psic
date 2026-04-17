@@ -308,30 +308,77 @@
       <button id="search-clear" title="Limpar">✕</button>
     </div>
 
-    <div class="nav-sep">Fases</div>
+    <div class="nav-sep">Parte I — Teoria</div>
 
-    <div class="nav-phase active" data-phase="1" onclick="loadPhase(1,this)">
+    <div class="nav-phase active" data-key="p1-1" onclick="loadSection('p1-1',this)">
       <span class="nav-num">I</span> Fundamentos Freudianos
       <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" data-phase="2" onclick="loadPhase(2,this)">
+    <div class="nav-phase" data-key="p1-2" onclick="loadSection('p1-2',this)">
       <span class="nav-num">II</span> Ego Psychology &amp; Self Psychology
       <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" data-phase="3" onclick="loadPhase(3,this)">
+    <div class="nav-phase" data-key="p1-3" onclick="loadSection('p1-3',this)">
       <span class="nav-num">III</span> Relações de Objeto Britânicas
       <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" data-phase="4" onclick="loadPhase(4,this)">
+    <div class="nav-phase" data-key="p1-4" onclick="loadSection('p1-4',this)">
       <span class="nav-num">IV</span> Escola Interpessoal/Relacional
       <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" data-phase="5" onclick="loadPhase(5,this)">
+    <div class="nav-phase" data-key="p1-5" onclick="loadSection('p1-5',this)">
       <span class="nav-num">V</span> Lacan
       <span class="nav-badge">…</span>
     </div>
-    <div class="nav-phase" data-phase="6" onclick="loadPhase(6,this)">
+    <div class="nav-phase" data-key="p1-6" onclick="loadSection('p1-6',this)">
       <span class="nav-num">VI</span> Síntese Crítica
+      <span class="nav-badge">…</span>
+    </div>
+
+    <div class="nav-sep" style="margin-top:0.8rem">Parte II — Apresentações Clínicas</div>
+
+    <div class="nav-phase" data-key="p2-1" onclick="loadSection('p2-1',this)">
+      <span class="nav-num">1</span> Depressão e Luto
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-2" onclick="loadSection('p2-2',this)">
+      <span class="nav-num">2</span> Ansiedade e Angústia
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-3" onclick="loadSection('p2-3',this)">
+      <span class="nav-num">3</span> Fobia
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-4" onclick="loadSection('p2-4',this)">
+      <span class="nav-num">4</span> Neurose Obsessiva
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-5" onclick="loadSection('p2-5',this)">
+      <span class="nav-num">5</span> Histeria
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-6" onclick="loadSection('p2-6',this)">
+      <span class="nav-num">6</span> Trauma
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-7" onclick="loadSection('p2-7',this)">
+      <span class="nav-num">7</span> Narcisismo Patológico
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-8" onclick="loadSection('p2-8',this)">
+      <span class="nav-num">8</span> Transt. de Personalidade Borderline
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-9" onclick="loadSection('p2-9',this)">
+      <span class="nav-num">9</span> Psicose
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-10" onclick="loadSection('p2-10',this)">
+      <span class="nav-num">10</span> Dependência e Impulsividade
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p2-11" onclick="loadSection('p2-11',this)">
+      <span class="nav-num">11</span> Identidade de Gênero e Sexualidade
       <span class="nav-badge">…</span>
     </div>
   </nav>
@@ -346,22 +393,29 @@
 </div>
 <script>
 // ── Config ────────────────────────────────────────────
-const PHASES = {
-  1:{file:'fase1.json',status:'next',data:null},
-  2:{file:'fase2.json',status:'next',data:null},
-  3:{file:'fase3.json',status:'next',data:null},
-  4:{file:'fase4.json',status:'next',data:null},
-  5:{file:'fase5.json',status:'next',data:null},
-  6:{file:'fase6.json',status:'next',data:null},
-};
-const PHASE_LABELS = {
-  1:'Fase I',2:'Fase II',3:'Fase III',
-  4:'Fase IV',5:'Fase V',6:'Fase VI'
+const SECTIONS = {
+  'p1-1':{file:'fase1.json',  status:'next', data:null, label:'Fase I'},
+  'p1-2':{file:'fase2.json',  status:'next', data:null, label:'Fase II'},
+  'p1-3':{file:'fase3.json',  status:'next', data:null, label:'Fase III'},
+  'p1-4':{file:'fase4.json',  status:'next', data:null, label:'Fase IV'},
+  'p1-5':{file:'fase5.json',  status:'next', data:null, label:'Fase V'},
+  'p1-6':{file:'fase6.json',  status:'next', data:null, label:'Fase VI'},
+  'p2-1':{file:'p2m01.json',  status:'next', data:null, label:'Módulo 1'},
+  'p2-2':{file:'p2m02.json',  status:'next', data:null, label:'Módulo 2'},
+  'p2-3':{file:'p2m03.json',  status:'next', data:null, label:'Módulo 3'},
+  'p2-4':{file:'p2m04.json',  status:'next', data:null, label:'Módulo 4'},
+  'p2-5':{file:'p2m05.json',  status:'next', data:null, label:'Módulo 5'},
+  'p2-6':{file:'p2m06.json',  status:'next', data:null, label:'Módulo 6'},
+  'p2-7':{file:'p2m07.json',  status:'next', data:null, label:'Módulo 7'},
+  'p2-8':{file:'p2m08.json',  status:'next', data:null, label:'Módulo 8'},
+  'p2-9':{file:'p2m09.json',  status:'next', data:null, label:'Módulo 9'},
+  'p2-10':{file:'p2m10.json', status:'next', data:null, label:'Módulo 10'},
+  'p2-11':{file:'p2m11.json', status:'next', data:null, label:'Módulo 11'},
 };
 
-let currentPhase = null;
-let activeNavEl  = null;
-let searchTimer  = null;
+let currentKey  = null;
+let activeNavEl = null;
+let searchTimer = null;
 
 // ── Init ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
@@ -370,7 +424,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const firstNav = document.querySelector('.nav-phase');
   activeNavEl = firstNav;
-  loadPhase(1, firstNav);
+  loadSection('p1-1', firstNav);
 
   const inp = document.getElementById('search-input');
   const clr = document.getElementById('search-clear');
@@ -393,12 +447,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
-// ── Phase detection ───────────────────────────────────
+// ── Auto-detect available sections ─────────────────────
 async function detectPhases() {
-  await Promise.all(Object.entries(PHASES).map(async ([n,ph]) => {
+  await Promise.all(Object.entries(SECTIONS).map(async ([k,s]) => {
     try {
-      const r = await fetch(ph.file, {method:'HEAD'});
-      if (r.ok) ph.status = 'done';
+      const r = await fetch(s.file, {method:'HEAD'});
+      if (r.ok) s.status = 'done';
     } catch(_){}
   }));
   updateNavBadges();
@@ -406,35 +460,36 @@ async function detectPhases() {
 
 function updateNavBadges() {
   document.querySelectorAll('.nav-phase').forEach(el => {
-    const n = +el.dataset.phase;
-    const ph = PHASES[n]; if (!ph) return;
+    const k = el.dataset.key;
+    const s = SECTIONS[k]; if (!s) return;
     const b = el.querySelector('.nav-badge');
-    if (ph.status === 'done') { b.className='nav-badge done'; b.textContent='Concluída'; }
+    if (s.status === 'done') { b.className='nav-badge done'; b.textContent='Concluída'; }
     else { b.className='nav-badge next'; b.textContent='Em breve'; }
   });
 }
 
-async function fetchData(n) {
-  const ph = PHASES[n];
-  if (ph.data) return ph.data;
-  if (ph.status !== 'done') return null;
+async function fetchData(key) {
+  const s = SECTIONS[key];
+  if (!s) return null;
+  if (s.data) return s.data;
+  if (s.status !== 'done') return null;
   try {
-    const r = await fetch(ph.file);
+    const r = await fetch(s.file);
     if (!r.ok) return null;
-    ph.data = await r.json();
-    return ph.data;
+    s.data = await r.json();
+    return s.data;
   } catch(_){ return null; }
 }
 
 async function loadAllBackground() {
-  for (const n of Object.keys(PHASES))
-    if (PHASES[n].status === 'done') await fetchData(+n);
+  for (const k of Object.keys(SECTIONS))
+    if (SECTIONS[k].status === 'done') await fetchData(k);
 }
 
-// ── Phase render ──────────────────────────────────────
-async function loadPhase(n, navEl) {
+// ── Section render ────────────────────────────────────
+async function loadSection(key, navEl) {
   clearSearch();
-  currentPhase = n;
+  currentKey = key;
   if (activeNavEl) activeNavEl.classList.remove('active');
   activeNavEl = navEl;
   navEl.classList.add('active');
@@ -443,30 +498,33 @@ async function loadPhase(n, navEl) {
   const view = document.getElementById('phase-view');
   view.innerHTML = '<div id="loading"><div class="spinner"></div> Carregando…</div>';
 
-  const ph = PHASES[n];
-  if (ph.status !== 'done') {
+  const s = SECTIONS[key];
+  if (!s || s.status !== 'done') {
+    const isP2 = key.startsWith('p2-');
+    const label = isP2 ? `Módulo ${key.replace('p2-','')}` : `Fase ${key.replace('p1-','')}`;
     view.innerHTML = `<div class="page-header">
-      <div class="phase-badge active">Fase ${n}</div>
+      <div class="phase-badge active">${label}</div>
       <h2>Em construção</h2>
-      <p class="sub">O conteúdo desta fase será adicionado à medida que o curso avança.</p>
+      <p class="sub">O conteúdo será adicionado à medida que o curso avança.</p>
     </div>`; return;
   }
 
-  const data = await fetchData(n);
-  if (!data) { view.innerHTML = `<div class="err">Erro ao carregar ${ph.file}.</div>`; return; }
-  renderPhase(data, n);
+  const data = await fetchData(key);
+  if (!data) { view.innerHTML = `<div class="err">Erro ao carregar ${s.file}.</div>`; return; }
+  renderPhase(data, key);
 }
 
-function renderPhase(data, n) {
+
+function renderPhase(data, key) {
   const view = document.getElementById('phase-view');
   let html = `<div class="page-header">
-    <div class="phase-badge done">Fase ${n} — Concluída</div>
+    <div class="phase-badge done">${key.startsWith('p2-') ? `Parte II — Módulo ${key.replace('p2-','')}` : `Fase ${key.replace('p1-','')} — Concluída`}</div>
     <h2>${data.titulo}</h2>
     <p class="sub">${data.textos.length} texto${data.textos.length!==1?'s':''}</p>
   </div><ul class="text-list">`;
 
   data.textos.forEach((t, i) => {
-    const sid = `s-${n}-${i}`, rid = `r-${n}-${i}`;
+    const sid = `s-${key}-${i}`, rid = `r-${key}-${i}`;
     const hasSint = !!(t.sintese && t.sintese.trim());
     const hasReg  = !!(t.registro_html && t.registro_html.trim());
     html += `<li class="ti" id="ti-${n}-${i}">
@@ -572,9 +630,9 @@ async function runSearch(query) {
 
   const hits = [];
 
-  for (const [n, ph] of Object.entries(PHASES)) {
-    if (ph.status !== 'done') continue;
-    const data = await fetchData(+n);
+  for (const [k, sec] of Object.entries(SECTIONS)) {
+    if (sec.status !== 'done') continue;
+    const data = await fetchData(k);
     if (!data) continue;
     const ql = query.toLowerCase();
 
@@ -582,7 +640,7 @@ async function runSearch(query) {
       // sintese
       if (t.sintese && t.sintese.toLowerCase().includes(ql)) {
         hits.push({
-          phase:+n, phLabel:PHASE_LABELS[n],
+          sectionKey:k, phLabel:sec.label,
           textTitle:t.titulo_pt, textIdx:ti,
           blockTitle:'Síntese', blockId:null,
           plain:t.sintese, isSintese:true
@@ -591,14 +649,14 @@ async function runSearch(query) {
       // registro blocks
       if (t.registro_html) {
         const tmp = document.createElement('div');
-        tmp.innerHTML = buildRegistro(t.registro_html, `r-${n}-${ti}`);
+        tmp.innerHTML = buildRegistro(t.registro_html, `r-${k}-${ti}`);
         tmp.querySelectorAll('.reg-block').forEach(bl => {
           const btitle = (bl.querySelector('.reg-block-title')||{}).textContent||'';
           const body   = bl.querySelector('.reg-block-body');
           const plain  = body ? stripHtml(body.innerHTML) : '';
           if (plain.toLowerCase().includes(ql)) {
             hits.push({
-              phase:+n, phLabel:PHASE_LABELS[n],
+              sectionKey:k, phLabel:sec.label,
               textTitle:t.titulo_pt, textIdx:ti,
               blockTitle:btitle.trim(), blockId:bl.id,
               plain, isSintese:false
@@ -622,7 +680,7 @@ async function runSearch(query) {
   hits.forEach(h => {
     const snip = snippet(h.plain, query);
     const hl   = highlight(snip, query);
-    html += `<div class="sr-item" onclick="navigateTo(${h.phase},${h.textIdx},'${h.blockId||''}',${h.isSintese})">
+    html += `<div class="sr-item" onclick="navigateTo('${h.sectionKey}',${h.textIdx},'${h.blockId||''}',${h.isSintese})">
       <div class="sr-meta">
         <span class="sr-phase">${h.phLabel}</span>
         <span class="sr-sep">·</span>
@@ -636,35 +694,35 @@ async function runSearch(query) {
   res.innerHTML = html;
 }
 
-async function navigateTo(phaseN, textIdx, blockId, isSintese) {
+async function navigateTo(sectionKey, textIdx, blockId, isSintese) {
   clearSearch();
   showPhaseView();
 
   // activate nav
-  const navEl = document.querySelector(`.nav-phase[data-phase="${phaseN}"]`);
+  const navEl = document.querySelector(`.nav-phase[data-key="${sectionKey}"]`);
   if (navEl) {
     if (activeNavEl) activeNavEl.classList.remove('active');
     activeNavEl = navEl; navEl.classList.add('active');
   }
-  currentPhase = phaseN;
+  currentKey = sectionKey;
 
-  const data = await fetchData(phaseN);
+  const data = await fetchData(sectionKey);
   if (!data) return;
-  renderPhase(data, phaseN);
+  renderPhase(data, sectionKey);
 
   await new Promise(r => setTimeout(r, 80));
 
-  const textEl = document.getElementById(`ti-${phaseN}-${textIdx}`);
+  const textEl = document.getElementById(`ti-${sectionKey}-${textIdx}`);
 
   if (isSintese) {
-    const sid = `s-${phaseN}-${textIdx}`;
+    const sid = `s-${sectionKey}-${textIdx}`;
     const sel = document.getElementById(sid);
     const btn = textEl && textEl.querySelector('.sbtn');
     if (sel) { sel.classList.add('open'); if(btn) btn.classList.add('open'); }
     if (textEl) textEl.scrollIntoView({behavior:'smooth',block:'start'});
 
   } else if (blockId) {
-    const rid = `r-${phaseN}-${textIdx}`;
+    const rid = `r-${sectionKey}-${textIdx}`;
     const rel = document.getElementById(rid);
     const btn = textEl && textEl.querySelector('.rbtn');
     if (rel) { rel.classList.add('open'); if(btn) btn.classList.add('open'); }
