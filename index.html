@@ -381,6 +381,53 @@
       <span class="nav-num">11</span> Identidade de Gênero e Sexualidade
       <span class="nav-badge">…</span>
     </div>
+
+    <div class="nav-sep" style="margin-top:0.8rem">Parte III — Tópicos Especiais</div>
+
+    <div class="nav-phase" data-key="p3-1" onclick="loadSection('p3-1',this)">
+      <span class="nav-num">1</span> Jung e a Psicologia Analítica
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-2" onclick="loadSection('p3-2',this)">
+      <span class="nav-num">2</span> Psicanálise e Neurociência
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-3" onclick="loadSection('p3-3',this)">
+      <span class="nav-num">3</span> Psicanálise na América Latina
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-4" onclick="loadSection('p3-4',this)">
+      <span class="nav-num">4</span> Leituras Externas
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-5" onclick="loadSection('p3-5',this)">
+      <span class="nav-num">5</span> Psicoterapia Psicodinâmica
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-6" onclick="loadSection('p3-6',this)">
+      <span class="nav-num">6</span> Contribuições a Outros Campos
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-7" onclick="loadSection('p3-7',this)">
+      <span class="nav-num">7</span> Modelos Paralelos em Outras Culturas
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-8" onclick="loadSection('p3-8',this)">
+      <span class="nav-num">8</span> Psicanálise e Teoria Queer
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-9" onclick="loadSection('p3-9',this)">
+      <span class="nav-num">9</span> Psicanálise e Cultura
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-10" onclick="loadSection('p3-10',this)">
+      <span class="nav-num">10</span> Psicanálise de Adolescentes
+      <span class="nav-badge">…</span>
+    </div>
+    <div class="nav-phase" data-key="p3-11" onclick="loadSection('p3-11',this)">
+      <span class="nav-num">11</span> Psicanálise Contemporânea
+      <span class="nav-badge">…</span>
+    </div>
   </nav>
 
   <main id="main">
@@ -411,6 +458,17 @@ const SECTIONS = {
   'p2-9':{file:'p2m09.json',  status:'next', data:null, label:'Módulo 9'},
   'p2-10':{file:'p2m10.json', status:'next', data:null, label:'Módulo 10'},
   'p2-11':{file:'p2m11.json', status:'next', data:null, label:'Módulo 11'},
+  'p3-1':{file:'p3m01.json',  status:'next', data:null, label:'Tópico 1'},
+  'p3-2':{file:'p3m02.json',  status:'next', data:null, label:'Tópico 2'},
+  'p3-3':{file:'p3m03.json',  status:'next', data:null, label:'Tópico 3'},
+  'p3-4':{file:'p3m04.json',  status:'next', data:null, label:'Tópico 4'},
+  'p3-5':{file:'p3m05.json',  status:'next', data:null, label:'Tópico 5'},
+  'p3-6':{file:'p3m06.json',  status:'next', data:null, label:'Tópico 6'},
+  'p3-7':{file:'p3m07.json',  status:'next', data:null, label:'Tópico 7'},
+  'p3-8':{file:'p3m08.json',  status:'next', data:null, label:'Tópico 8'},
+  'p3-9':{file:'p3m09.json',  status:'next', data:null, label:'Tópico 9'},
+  'p3-10':{file:'p3m10.json', status:'next', data:null, label:'Tópico 10'},
+  'p3-11':{file:'p3m11.json', status:'next', data:null, label:'Tópico 11'},
 };
 
 let currentKey  = null;
@@ -501,7 +559,8 @@ async function loadSection(key, navEl) {
   const s = SECTIONS[key];
   if (!s || s.status !== 'done') {
     const isP2 = key.startsWith('p2-');
-    const label = isP2 ? `Módulo ${key.replace('p2-','')}` : `Fase ${key.replace('p1-','')}`;
+    const isP3 = key.startsWith('p3-');
+    const label = isP2 ? `Módulo ${key.replace('p2-','')}` : isP3 ? `Tópico ${key.replace('p3-','')}` : `Fase ${key.replace('p1-','')}`;
     view.innerHTML = `<div class="page-header">
       <div class="phase-badge active">${label}</div>
       <h2>Em construção</h2>
