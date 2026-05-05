@@ -155,6 +155,8 @@
   .sbtn:hover, .sbtn.open { background: #f0e4c8; border-color: var(--gold); }
   .rbtn { background: var(--blue-bg); border-color: #7a9ab8; color: var(--blue); }
   .rbtn:hover, .rbtn.open { background: #dce8f2; border-color: var(--blue); }
+  .tbtn { background: #f0f5ee; border-color: #8aaa78; color: #4a7a3a; }
+  .tbtn:hover, .tbtn.open { background: #e0ecda; border-color: #4a7a3a; }
   .ba { font-size: 0.6em; transition: transform 0.18s; display: inline-block; }
   .abtn.open .ba { transform: rotate(180deg); }
 
@@ -171,6 +173,18 @@
   /* Registro wrapper */
   .tata { display: none; margin-top: 0.85rem; }
   .tata.open { display: block; }
+
+  /* Texto completo */
+  .ttxt { display: none; margin-top: 0.85rem; }
+  .ttxt.open { display: block; }
+  .ttxt-inner {
+    background: var(--bg-warm); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1.2rem 1.5rem;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 0.91rem; line-height: 1.75; color: var(--ink-soft);
+    white-space: pre-wrap; word-break: break-word;
+    max-height: 70vh; overflow-y: auto;
+  }
 
   /* Mini-TOC */
   .reg-toc {
@@ -497,15 +511,15 @@ const SECTIONS = {
   'p2-9':{file:'p2m09.json',  status:'next', data:null, label:'Módulo 9'},
   'p2-10':{file:'p2m10.json', status:'next', data:null, label:'Módulo 10'},
   'p2-11':{file:'p2m11.json', status:'next', data:null, label:'Módulo 11'},
-  'ps-0':{file:'psm00.json',  status:'next', data:null, label:'Módulo 0'},
-  'ps-1':{file:'psm01.json',  status:'next', data:null, label:'Módulo 1'},
-  'ps-2':{file:'psm02.json',  status:'next', data:null, label:'Módulo 2'},
-  'ps-3':{file:'psm03.json',  status:'next', data:null, label:'Módulo 3'},
-  'ps-4':{file:'psm04.json',  status:'next', data:null, label:'Módulo 4'},
-  'ps-5':{file:'psm05.json',  status:'next', data:null, label:'Módulo 5'},
-  'ps-6':{file:'psm06.json',  status:'next', data:null, label:'Módulo 6'},
-  'ps-7':{file:'psm07.json',  status:'next', data:null, label:'Módulo 7'},
-  'ps-8':{file:'psm08.json',  status:'next', data:null, label:'Módulo 8'},
+  'ps-0':{file:'psm00.json',  txt:'psm00.txt', status:'next', data:null, label:'Módulo 0'},
+  'ps-1':{file:'psm01.json',  txt:'psm01.txt', status:'next', data:null, label:'Módulo 1'},
+  'ps-2':{file:'psm02.json',  txt:'psm02.txt', status:'next', data:null, label:'Módulo 2'},
+  'ps-3':{file:'psm03.json',  txt:'psm03.txt', status:'next', data:null, label:'Módulo 3'},
+  'ps-4':{file:'psm04.json',  txt:'psm04.txt', status:'next', data:null, label:'Módulo 4'},
+  'ps-5':{file:'psm05.json',  txt:'psm05.txt', status:'next', data:null, label:'Módulo 5'},
+  'ps-6':{file:'psm06.json',  txt:'psm06.txt', status:'next', data:null, label:'Módulo 6'},
+  'ps-7':{file:'psm07.json',  txt:'psm07.txt', status:'next', data:null, label:'Módulo 7'},
+  'ps-8':{file:'psm08.json',  txt:'psm08.txt', status:'next', data:null, label:'Módulo 8'},
   'p3-1':{file:'p3m01.json',  status:'next', data:null, label:'Tópico 1'},
   'p3-2':{file:'p3m02.json',  status:'next', data:null, label:'Tópico 2'},
   'p3-3':{file:'p3m03.json',  status:'next', data:null, label:'Tópico 3'},
@@ -631,10 +645,14 @@ function renderPhase(data, key) {
     <p class="sub">${data.textos.length} texto${data.textos.length!==1?'s':''}</p>
   </div><ul class="text-list">`;
 
+  const hasTxt  = !!(SECTIONS[key]?.txt);
+  const txid = `t-${key}`;
   data.textos.forEach((t, i) => {
     const sid = `s-${key}-${i}`, rid = `r-${key}-${i}`;
     const hasSint = !!(t.sintese && t.sintese.trim());
     const hasReg  = !!(t.registro_html && t.registro_html.trim());
+    // txt button only on first item (source file is per-module, not per-texto)
+    const showTxt = hasTxt && i === 0;
     html += `<li class="ti" id="ti-${key}-${i}">
       <div class="th">
         <span class="yr">${t.ano}</span>
@@ -643,9 +661,11 @@ function renderPhase(data, key) {
       <div class="tactions">
         ${hasSint?`<button class="abtn sbtn" onclick="toggleP('${sid}',this)">Síntese <span class="ba">▾</span></button>`:''}
         ${hasReg ?`<button class="abtn rbtn" onclick="toggleP('${rid}',this)">Registro do curso <span class="ba">▾</span></button>`:''}
+        ${showTxt?`<button class="abtn tbtn" onclick="toggleTxt('${txid}','${SECTIONS[key].txt}',this)">Texto completo <span class="ba">▾</span></button>`:''}
       </div>
       ${hasSint?`<div class="tsintese" id="${sid}">${t.sintese}</div>`:''}
       ${hasReg ?`<div class="tata" id="${rid}">${buildRegistro(t.registro_html, rid)}</div>`:''}
+      ${showTxt?`<div class="ttxt" id="${txid}"><div class="ttxt-inner">Carregando…</div></div>`:''}
     </li>`;
   });
 
@@ -705,6 +725,26 @@ function toggleP(id, btn) {
   const el = document.getElementById(id);
   const open = el.classList.toggle('open');
   btn.classList.toggle('open', open);
+}
+
+async function toggleTxt(id, txtFile, btn) {
+  const el = document.getElementById(id);
+  const inner = el.querySelector('.ttxt-inner');
+  const opening = !el.classList.contains('open');
+
+  el.classList.toggle('open', opening);
+  btn.classList.toggle('open', opening);
+
+  if (opening && inner && inner.textContent === 'Carregando…') {
+    try {
+      const r = await fetch(txtFile);
+      if (!r.ok) throw new Error('not found');
+      const text = await r.text();
+      inner.textContent = text;
+    } catch(_) {
+      inner.textContent = 'Texto completo não disponível. Verifique se o arquivo ' + txtFile + ' foi adicionado ao repositório.';
+    }
+  }
 }
 
 // ── Search ────────────────────────────────────────────
